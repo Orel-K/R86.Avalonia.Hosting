@@ -19,6 +19,10 @@ public abstract partial class HostedApplication<T> : Application, IHostedService
     public static AvaloniaApplicationBuilder CreateBuilder(string[]? args = null,
         Func<AppBuilder>? builderFactory = null)
     {
+        // For `top level statements`
+        Thread.CurrentThread.TrySetApartmentState(ApartmentState.Unknown);
+        Thread.CurrentThread.TrySetApartmentState(ApartmentState.STA);
+
         args ??= [.. Environment.GetCommandLineArgs().Skip(1)];
 
         var builder = new AvaloniaApplicationBuilder(args, builderFactory);

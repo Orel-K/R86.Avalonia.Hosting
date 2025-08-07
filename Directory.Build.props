@@ -1,10 +1,3 @@
 <Project>
-  <PropertyGroup Label="Package Info">
-    <RepositoryUrl>https://github.com/orel-k/R86.Avalonia.Hosting</RepositoryUrl>
-    <Description>Simple library that provides familiar dotnet application building blocks</Description>
-    <PackageTags>c-sharp;xaml;cross-platform;dotnet;dotnetcore;avalonia;avaloniaui;</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>0.1.0</Version>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-  </PropertyGroup>  
+
 </Project>

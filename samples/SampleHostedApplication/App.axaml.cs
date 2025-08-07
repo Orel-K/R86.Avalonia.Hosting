@@ -1,10 +1,6 @@
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
-using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using R86.Avalonia.Hosting;
 using SampleHostedApplication.ViewModels;
