@@ -22,7 +22,7 @@ public sealed class MyBackgroundService : BackgroundService
         long tick = 0;
 
 #if NET6_0_OR_GREATER
-        using var pd = new PeriodicTimer(TimeSpan.FromSeconds(3));
+        using var pd = new PeriodicTimer(TimeSpan.FromSeconds(1));
         do
         {
             _logger.LogInformation("Ticking in the background.. {tick}", ++tick);
@@ -32,7 +32,7 @@ public sealed class MyBackgroundService : BackgroundService
         while (!stoppingToken.IsCancellationRequested)
         {
             _logger.LogInformation("Ticking in the background.. {tick}", ++tick);
-            await Task.Delay(3000, stoppingToken);
+            await Task.Delay(1000, stoppingToken);
         }
 #endif
     }

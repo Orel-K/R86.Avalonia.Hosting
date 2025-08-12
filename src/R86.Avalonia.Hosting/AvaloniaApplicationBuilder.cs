@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.Metrics;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -10,11 +11,18 @@ namespace R86.Avalonia.Hosting;
 
 public abstract partial class HostedApplication<T> where T : HostedApplication<T>, new()
 {
-    public sealed class AvaloniaApplicationBuilder
+    public sealed class AvaloniaApplicationBuilder : IHostApplicationBuilder
     {
         public IServiceCollection Services => _hostBuilder.Services;
         public ILoggingBuilder Logging => _hostBuilder.Logging;
         public IConfigurationManager Configuration => _hostBuilder.Configuration;
+
+        IDictionary<object, object> IHostApplicationBuilder.Properties => ((IHostApplicationBuilder)_hostBuilder).Properties;
+
+        IHostEnvironment IHostApplicationBuilder.Environment => _hostBuilder.Environment;
+
+        IMetricsBuilder IHostApplicationBuilder.Metrics => _hostBuilder.Metrics;
+
         public T Build(ServiceProviderOptions? serviceProviderOptions = null, Action<IClassicDesktopStyleApplicationLifetime>? lifetimeBuilder = null)
         {
             serviceProviderOptions ??= new ServiceProviderOptions()
@@ -43,6 +51,8 @@ public abstract partial class HostedApplication<T> where T : HostedApplication<T
             return (T)app;
         }
 
+        void IHostApplicationBuilder.ConfigureContainer<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> factory, Action<TContainerBuilder>? configure) => throw new NotImplementedException();
+
         readonly AppBuilder _appBuilder;
         readonly HostApplicationBuilder _hostBuilder;
         readonly string[] _args;
@@ -50,7 +60,8 @@ public abstract partial class HostedApplication<T> where T : HostedApplication<T
            Func<AppBuilder>? builderFactory = null)
         {
             _args = args;
-            _hostBuilder = Host.CreateEmptyApplicationBuilder(null);
+
+            _hostBuilder = Host.CreateApplicationBuilder();
 
             _appBuilder = (builderFactory ?? AppBuilder.Configure<T>).Invoke();
         }

@@ -5,14 +5,19 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:vm="using:SampleHostedApplication.ViewModels"
              x:DataType="vm:MainViewModel"
+             Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
              x:Class="SampleHostedApplication.Views.MainView">
-    <Grid RowDefinitions="*,Auto" Background="Yellow">
+    <Grid RowDefinitions="*,Auto">
 
         <Border
             HorizontalAlignment="Stretch"
-            Height="50"
-            Grid.Row="1" Background="Red"
-
-                />
+            Height="60"
+            Grid.Row="1"
+            Background="{DynamicResource SystemAccentColor}">
+            <TextBlock Margin="5,0,0,0"
+                    
+                       Text="{Binding LastLogMessages}"
+                      LineHeight="20" />
+        </Border>
     </Grid>
 </UserControl>

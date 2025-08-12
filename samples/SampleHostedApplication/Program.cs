@@ -1,27 +1,43 @@
 ﻿using System;
 using Avalonia;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using SampleHostedApplication;
 using SampleHostedApplication.Services;
 using SampleHostedApplication.ViewModels;
 
+namespace SampleHostedApplication
+{
+    internal sealed class Program
+    {
+        // Initialization code. Don't use any Avalonia, third-party APIs or any
+        // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
+        // yet and stuff might break.
+        [STAThread]
+        public static void Main(string[] args)
+        {
+            var builder = App.CreateBuilder(args, BuildAvaloniaApp);
 
-var builder = App.CreateBuilder(args, BuildAvaloniaApp);
+            builder.AddServiceDefaults();
 
-builder.Logging.AddProvider(new UiLoggerProvider());
+            builder.Logging.AddConsole();
 
-builder.Services.AddTransient<MainViewModel>();
+            builder.Logging.AddUiLoggerProvider();
 
-builder.Services.AddHostedService<MyBackgroundService>();
+            builder.Services.AddTransient<MainViewModel>();
 
-App app = builder.Build();
+            builder.Services.AddHostedService<MyBackgroundService>();
 
-app.Run();
+            App app = builder.Build();
 
+            app.Run();
+        }
 
-static AppBuilder BuildAvaloniaApp()
-    => AppBuilder.Configure<App>()
-        .UsePlatformDetect()
-        .WithInterFont()
-        .LogToTrace();
+        // Avalonia configuration, don't remove; also used by visual designer.
+        public static AppBuilder BuildAvaloniaApp()
+            => AppBuilder.Configure<App>()
+                .UsePlatformDetect()
+                .WithInterFont()
+                .LogToTrace();
+    }
+}
